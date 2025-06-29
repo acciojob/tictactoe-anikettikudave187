@@ -1,1 +1,68 @@
 /*  your css code here. If applicable */
+h1{
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    font-size: 2.5rem;
+}
+.players{
+	margin:0 auto 30px auto;
+	flex-direction:column;
+	display:flex;
+	width:400px;
+	gap:10px;
+}
+.players input{
+    padding:10px;
+	border:1px solid #ccc;
+	font-size:1em;
+	border-radius:4px;
+}
+
+.gameBoard{
+    height: 60vmin;
+    width: 60vmin;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5vmin;
+}
+.board{
+    height: 70vh;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+.cells{
+    width: 18vmin;
+    height: 18vmin;
+    border: 1px solid grey;
+    border-radius: 4px;
+    background-color: rgb(241, 237, 232);
+    text-align: center;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    font-size: 8vmin;
+}
+#reset{
+    background-color: #191913;
+    padding: 1rem;
+    font-size: 0.75rem;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.message{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2rem;
+    color: rgb(27, 82, 64);
+}
+.hide{
+    display: none;
+}
