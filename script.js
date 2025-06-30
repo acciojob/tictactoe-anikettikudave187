@@ -1,125 +1,108 @@
-//your JS code here. If required.
+let startBtn = document.getElementById('submit');
+let resetBtn = document.getElementById('reset');
+let boxes = document.querySelectorAll('.cells');
+let playersDiv = document.querySelector('.players');
+let board = document.querySelector('.board');
+let msg = document.getElementById('winner');
 
-let startBtn=document.getElementById('submit');
+let player1 = "";
+let player2 = "";
+let turnX = true;
+let count = 0;
 
-startBtn.addEventListener("click",()=>{
-    const userName1=document.getElementById('player1').value;
-    const userName2=document.getElementById('player2').value;
+const winningPatterns = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+];
 
-    let players=document.querySelector('.players');
-    players.classList.add('hide');
-
-    let board=document.querySelector('.board');
-    board.classList.remove('hide');
-
-    let boxes=document.querySelectorAll('.cells');
-    let resetBtn=document.getElementById('reset');
-
-    let msg=document.getElementById('winner');
-    msg.classList.remove('hide');
-    msg.innerText=`${userName1}, you're up`;
-
-    let turnX=true;
-    let count=0;
-    const winningPatterns=[
-        [0,1,2],
-        [0,3,6],
-        [0,4,8],
-        [1,4,7],
-        [2,5,8],
-        [2,4,6],
-        [3,4,5],
-        [6,7,8]
-    ];
-
-    function resetGame(){
-        turnX=true;
-        count=0;
-        enableBoxes();
-    }
-
-    boxes.forEach((box)=>{
-
-        box.addEventListener("click",()=>{
-            if(turnX){
-                msg.innerText=`${userName2},you're up`;
-                box.innerText="X";
-                turnX=false;
-            }else{
-                msg.innerText=`${userName1},you're up`;
-                box.innerText="O";
-                turnX=true;
-            }
-            box.disabled=true;
-            count++;
-
-            let checkWinner=isWinner();
-
-            if(count===9 && !checkWinner){
-                gameDraw();
-            }
-
-        });
-    });
-
-    function isWinner(){
-        for(let pattern of winningPatterns){
-            let pos1=boxes[pattern[0]].innerText;
-            let pos2=boxes[pattern[1]].innerText;
-            let pos3=boxes[pattern[2]].innerText;
-
-            if(pos1!="" && pos2!="" && pos3!=""){
-                if(pos1===pos2 && pos2===pos3){
-                    if(pos1==='X'){
-                        showWinner(userName1);
-                    }else{
-                        showWinner(userName2);
-                    }
-                    return true;
-                }
-            }
-        }
-    }
-
-    function showWinner(winnerName){
-        msg.innerText=`${winnerName}, Congratulations you won !`;
-        msg.classList.remove('hide');
-        disableBoxes();
-        setTimeout(newGame,2000);
-
-    }
-
-    function gameDraw(){
-        msg.innerText=`game is draw`;
-        msg.classList.remove('hide');
-        disableBoxes();
-        setTimeout(newGame,2000);
-    }
-
-    function disableBoxes(){
-        for(let box of boxes){
-            box.disabled=true;
-        }
-    }
-
-    function enableBoxes(){
-        for(let box of boxes){
-            box.disabled=false;
-            box.innerText="";
-        }
-    }
-
-    function newGame(){
-        enableBoxes();
-        resetGame();
-
-        players.classList.remove('hide');
-        board.classList.add('hide');
-        msg.classList.add('hide');
-        document.getElementById('player-1').value="";
-        document.getElementById('player-2').value="";
-    }
-
-    resetBtn.addEventListener("click",resetGame);
-
+// Attach click handlers to boxes just once
+boxes.forEach((box) => {
+    box.addEventListener("click", () => handleMove(box));
 });
+
+startBtn.addEventListener("click", () => {
+    player1 = document.getElementById('player1').value;
+    player2 = document.getElementById('player2').value;
+
+    if (!player1 || !player2) {
+        alert("Please enter both player names.");
+        return;
+    }
+
+    playersDiv.classList.add('hide');
+    board.classList.remove('hide');
+    msg.innerText = `${player1}, you're up`;
+    msg.classList.remove('hide');
+    resetGame();
+});
+
+resetBtn.addEventListener("click", resetGame);
+
+function handleMove(box) {
+    if (box.disabled) return;
+
+    box.innerText = turnX ? "X" : "O";
+    box.disabled = true;
+    msg.innerText = turnX ? `${player2}, you're up` : `${player1}, you're up`;
+
+    count++;
+    if (isWinner()) return;
+    if (count === 9) return gameDraw();
+
+    turnX = !turnX;
+}
+
+function isWinner() {
+    for (let pattern of winningPatterns) {
+        const [a, b, c] = pattern;
+        const val1 = boxes[a].innerText;
+        const val2 = boxes[b].innerText;
+        const val3 = boxes[c].innerText;
+
+        if (val1 && val1 === val2 && val2 === val3) {
+            const winnerName = (val1 === "X") ? player1 : player2;
+            showWinner(winnerName);
+            return true;
+        }
+    }
+    return false;
+}
+
+function showWinner(winnerName) {
+    msg.innerText = `${winnerName}, Congratulations you won!`;
+    disableBoxes();
+    setTimeout(newGame, 2000);
+}
+
+function gameDraw() {
+    msg.innerText = "Game is draw";
+    disableBoxes();
+    setTimeout(newGame, 2000);
+}
+
+function disableBoxes() {
+    boxes.forEach(box => box.disabled = true);
+}
+
+function enableBoxes() {
+    boxes.forEach(box => {
+        box.disabled = false;
+        box.innerText = "";
+    });
+}
+
+function resetGame() {
+    turnX = true;
+    count = 0;
+    enableBoxes();
+}
+
+function newGame() {
+    resetGame();
+    playersDiv.classList.remove('hide');
+    board.classList.add('hide');
+    msg.classList.add('hide');
+    document.getElementById('player1').value = "";
+    document.getElementById('player2').value = "";
+}
