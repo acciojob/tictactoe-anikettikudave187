@@ -3,8 +3,8 @@
 let startBtn=document.getElementById('submit');
 
 startBtn.addEventListener("click",()=>{
-    const userName1=document.getElementById('player-1').value;
-    const userName2=document.getElementById('player-2').value;
+    const userName1=document.getElementById('player1').value;
+    const userName2=document.getElementById('player2').value;
 
     let players=document.querySelector('.players');
     players.classList.add('hide');
