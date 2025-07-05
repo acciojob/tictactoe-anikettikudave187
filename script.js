@@ -42,7 +42,7 @@ resetBtn.addEventListener("click", resetGame);
 function handleMove(box) {
     if (box.disabled) return;
 
-    box.innerText = turnX ? "X" : "O";
+    box.innerText = turnX ? "x" : "o";
     box.disabled = true;
     msg.innerText = turnX ? `${player2}, you're up` : `${player1}, you're up`;
 
@@ -61,7 +61,7 @@ function isWinner() {
         const val3 = boxes[c].innerText;
 
         if (val1 && val1 === val2 && val2 === val3) {
-            const winnerName = (val1 === "X") ? player1 : player2;
+            const winnerName = (val1 === "x") ? player1 : player2;
             showWinner(winnerName);
             return true;
         }
@@ -70,7 +70,7 @@ function isWinner() {
 }
 
 function showWinner(winnerName) {
-    msg.innerText = `${winnerName}, Congratulations you won!`;
+    msg.innerText = `${winnerName} congratulations you won!`;
     disableBoxes();
     setTimeout(newGame, 2000);
 }
